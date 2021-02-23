@@ -4,17 +4,9 @@ import api from '../../auth/api';
 import xIcon from '../../assets/images/icons/x.svg';
 import IconGoogle from '../../assets/images/icons/google-icon.png';
 import { Container } from './styles';
-
-
+import {dataStorage, isConnected} from '../../utils/isConnected'
+// eslint-disable-next-line import/no-anonymous-default-export
 export default ({ onReceiveGoogle }) => {
-
-  // const [users] = useState([
-  //   { id: 1, user: 'email.usuario@compasso.com.br', password: 'keepalive' },
-  //   { id: 2, user: 'emersongr7@gmail.com', password: 'emerson' },
-  //   { id: 3, user: 'juliana@', password: 'keepalive' },
-  //   { id: 4, user: 'juliana@', password: '123' }
-  // ]);
-
 
   //definem valores dos inputs através do Onchange
   const [user, setUser] = useState('')
@@ -42,16 +34,14 @@ export default ({ onReceiveGoogle }) => {
     e.preventDefault();
 
     let result = await api.emailSenhaLogar(user, password);
+    console.log('rsult email', result);
     // // função que verifica se dentro do array users existe os dados equivalentes aos dos values do form
     // const isAuthenticated = users.some(data => data.user === user && data.password === password);
 
     if (result) {
-      localStorage.setItem('@weser/connected', true);
       setConnectionSuccessful(true);
       setError(false);
-      setTimeout(() => {
-        result && history.push('/home');
-      }, (1000 * 2)); //2s para
+      
 
     } else {
       setError(true);
@@ -64,15 +54,15 @@ export default ({ onReceiveGoogle }) => {
   const actionLoginGoogle = async (e) => {
     e.preventDefault();
     let result = await api.googleLogar();
-    if (result) {
+
+    if (result.additionalUserInfo.profile.verified_email) {
       onReceiveGoogle(result.user);
     }
     else {
-      alert('Error', result);
+      alert('Error ao logar, tente novamente');
+     
     }
   }
-
-
 
   return (
     <Container>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 export default function RouteWrapper({
@@ -7,17 +7,24 @@ export default function RouteWrapper({
   ...rest
 }) {
 
-  const signed = localStorage.getItem('@keepalive/connected');
+  useEffect(() =>{
 
-  if (!signed && isPrivate) {
+    const signed = localStorage.getItem('@user-data');
 
-    return <Redirect to="/" />;
-  }
-
-
-  if (signed || !isPrivate) {
-    return <Redirect to="/home" />;
-  }
+    if (!signed || signed == null) {
+  
+      return <Redirect to="/login" />;
+    }
+    if (!signed && isPrivate) {
+  
+      return <Redirect to="/login" />;
+    }
+  
+    if (signed && !isPrivate) {
+      return <Redirect to="/" />;
+    }
+  },[isPrivate])
+  
 
   return (
     <Route

@@ -22,19 +22,36 @@ transition: all 2s linear;
 
 export const Content = styled.div`
 display: flex;
-width: max-content;
+width: 100%;
 height: 70px;
 border-bottom: 1px solid #ddd;
 align-items: center;
-background: red;
-position: absolute;
-right: 0;
 transition: all linear 2s;
 
 &:hover .modal { 
   display: flex;
   }
 
+.logout{
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #404040;
+    background: #ddd;
+    padding: 5px;
+    border-radius: 50%;
+    right: 70px;
+    position: absolute;
+    &:hover{
+      box-shadow: 0 0 1px 1px #ddd; 
+    
+      }
+}
+
+}
 img{
   width: 50px;
   height: 50px;

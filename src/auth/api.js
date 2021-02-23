@@ -5,12 +5,14 @@ import 'firebase/firebase-firestore';
 import firebaseConfig from './config';
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-//const db = firebaseApp.firestore();
+ firebaseApp.firestore();
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   googleLogar: async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     let result = await firebase.auth().signInWithPopup(provider);
+    console.log('googleLogar', result);
     return result;
   },
 
@@ -28,21 +30,30 @@ export default {
   // },
 
   emailSenhaLogar: async (email, password) => {
-
-    let result = new firebase.auth().signInWithEmailAndPassword(email, password)
+   var res =  new firebase.auth().signInWithEmailAndPassword(email, password)
       .then((user) => {
-        console.log('Logado com sucesso', result);
-        return result = true;
+        console.log('Logado com sucesso',  user);
+         res = user.emailVerified
+        return res ;
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log('erro', errorCode, errorMessage);
-        return result = false;
+      //  console.log('erro', errorCode, errorMessage);
+     res = errorCode + errorMessage 
+        return res ;
       });
+     
+      return res;
+   
+  },
 
-    return result;
+  signOut: async () =>{
+    new firebase.auth().signOut().then(() => {
+      return true;
+    }).catch((error) => {
+      return false;
+    });
+    
   }
-
-
 };
